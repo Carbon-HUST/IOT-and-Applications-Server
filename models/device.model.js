@@ -17,7 +17,7 @@ const DeviceSchema = mongoose.Schema({
         required: true
     }
 }, {
-    timestampt: true
+    timestampts: true
 });
 
 module.exports = mongoose.model('Device', DeviceSchema);
