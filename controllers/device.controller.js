@@ -22,7 +22,7 @@ const getById = async (req, res) => {
 }
 
 const getByRoom = async (req, res) => {
-    const roomId = req.params.roomId;
+    const roomId = req.body.roomId;
     const room = await Room.exists({ _id: roomId });
     if (!room) {
         throw new NotFoundError("Room not found");
@@ -71,23 +71,45 @@ const destroy = async (req, res) => {
     return res.status(StatusCodes.OK).send();
 }
 
+const addDeviceData = async (req, res) => {
+
+}
+
 const getDeviceData = async (req, res) => {
-    const deviceId = req.params.deviceId;
-    const startTime = req.body.startTime;
+    const deviceId = req.body.deviceId;
+    let startTime = req.body.startTime;
     if (!startTime) {
         throw new BadRequestError("Start time is missing");
     }
-    startTime = Date.parse(startTime);
-    const endTime = req.body
+    startTime = new Date(startTime);
+    if (!startTime) {
+        throw new BadRequestError("Start time is invalid");
+    }
+    let endTime = req.body.endTime;
+    if (!endTime) {
+        throw new BadRequestError("End time is missing");
+    }
+    endTime = new Date(endTime);
+    if (!endTime) {
+        throw new BadRequestError("End time is invalid");
+    }
 
     const data = await DeviceData.find({
-        _id: deviceId,
+        deviceId,
         timestampt: {
-
+            $gte: startTime,
+            $lte: endTime
         }
-    })
+    });
+
+    return res.status(StatusCodes.OK).json({ data });
 }
 
 module.exports = {
-
+    getById,
+    getByRoom,
+    addToRoom,
+    update,
+    destroy,
+    getDeviceData
 }

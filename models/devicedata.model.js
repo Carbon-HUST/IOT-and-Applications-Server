@@ -18,6 +18,10 @@ const DeviceDataSchema = mongoose.Schema({
     timestampt: {
         type: Date,
         default: Date.now
+    },
+    deviceId: {
+        type: mongoose.Types.ObjectId,
+        required: true
     }
 });
 

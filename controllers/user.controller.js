@@ -1,4 +1,5 @@
 const User = require('../models/user.model');
+const Home = require('../models/home.model');
 const { StatusCodes } = require('http-status-codes');
 const { BadRequestError, UnauthenticatedError } = require('../errors');
 
@@ -24,7 +25,11 @@ const login = async (req, res) => {
   }
   // compare password
   const token = user.createJWT()
-  res.status(StatusCodes.OK).json({ user: { name: user.name }, token })
+  const home = await Home.findOne({ userId: user._id });
+  if (!home) {
+    return res.status(StatusCodes.OK).json({ user: { name: user.name }, token, homeId: null });
+  }
+  return res.status(StatusCodes.OK).json({ user: { name: user.name }, token, homeId: home._id });
 }
 
 module.exports = {

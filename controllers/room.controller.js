@@ -5,25 +5,32 @@ const { StatusCodes } = require('http-status-codes');
 
 const getByUser = async (req, res) => {
     const { id } = req.user;
+    const homeId = req.body.homeId;
 
-    const home = await Home.findOne({ userId: id });
-
-    if (!home) {
-        throw new NotFoundError("Home not found");
+    if (!homeId && homeId !== 0) {
+        const home = await Home.findOne({ userId: id });
+        if (!home) {
+            throw new NotFoundError("Home not found");
+        }
+        homeId = home._id;
     }
 
-    const rooms = await Room.find({ homeId: home._id });
+    const rooms = await Room.find({ homeId });
 
     return res.status(StatusCodes.OK).json(rooms);
 }
 
 const create = async (req, res) => {
-    const { id } = req.user;
+    const { userId } = req.user;
 
-    const home = await Home.findOne({ userId: id });
+    let homeId = req.body.homeId;
 
-    if (!home) {
-        throw new NotFoundError("Home not found");
+    if (!homeId && homeId !== 0) {
+        const home = await Home.findOne({ userId });
+        if (!home) {
+            throw new NotFoundError("Home not found");
+        }
+        homeId = home._id;
     }
 
     const roomName = req.body.name;
@@ -33,7 +40,7 @@ const create = async (req, res) => {
 
     const result = await Room.create({
         name: roomName,
-        homeId: home._id
+        homeId,
     });
 
     return res.status(StatusCodes.CREATED).json({ result });
@@ -42,17 +49,21 @@ const create = async (req, res) => {
 const update = async (req, res) => {
     const { id } = req.user;
 
-    const home = await Home.findOne({ userId: id });
+    const homeId = req.body.homeId;
 
-    if (!home) {
-        throw new NotFoundError("Home not found");
+    if (!homeId && homeId !== 0) {
+        const home = await Home.findOne({ userId: id });
+        if (!home) {
+            throw new NotFoundError("Home not found");
+        }
+        homeId = home._id;
     }
 
     const roomId = req.params.roomId;
     const newName = req.body.name;
 
     const result = await Room.findByIdAndUpdate({
-        _id: roomId, homeId: home._id
+        _id: roomId, homeId
     }, {
         name: newName
     }, {
