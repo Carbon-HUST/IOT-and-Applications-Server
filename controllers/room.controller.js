@@ -1,7 +1,13 @@
 const Room = require('../models/room.model');
 const Home = require('../models/home.model');
+const Device = require('../models/device.model');
 const { BadRequestError, NotFoundError } = require('../errors');
 const { StatusCodes } = require('http-status-codes');
+
+// get all room in a home/by user
+// add a new room
+// update a room
+// delete a room
 
 const getByUser = async (req, res) => {
     const { id } = req.user;
@@ -47,19 +53,19 @@ const create = async (req, res) => {
 }
 
 const update = async (req, res) => {
-    const { id } = req.user;
+    const { userId } = req.user;
 
-    const homeId = req.body.homeId;
+    let homeId = req.body.homeId;
 
     if (!homeId && homeId !== 0) {
-        const home = await Home.findOne({ userId: id });
+        const home = await Home.findOne({ userId });
         if (!home) {
             throw new NotFoundError("Home not found");
         }
         homeId = home._id;
     }
 
-    const roomId = req.params.roomId;
+    const roomId = req.body.roomId;
     const newName = req.body.name;
 
     const result = await Room.findByIdAndUpdate({
@@ -78,8 +84,26 @@ const update = async (req, res) => {
     return res.status(StatusCodes.OK).json({ result });
 }
 
+const destroy = async (req, res) => {
+    const { homeId, roomId } = req.body;
+    const result = await Room.findOneAndDelete({
+        _id: roomId,
+        homeId
+    });
+    if (!result) {
+        throw new NotFoundError(`No room with id ${roomId}`);
+    }
+
+    await Device.deleteMany({
+        roomId
+    });
+
+    return res.status(StatusCodes.NO_CONTENT).send();
+}
+
 module.exports = {
     getByUser,
     create,
-    update
+    update,
+    destroy
 }
