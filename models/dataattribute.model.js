@@ -15,7 +15,7 @@ const DataAttributeSchema = mongoose.Schema({
         required: [true, "Please provide measurement unit for data"]
     }
 }, {
-    timestampts: true
+    timestamps: true
 });
 
 module.exports = mongoose.model("DataAttribute", DataAttributeSchema);

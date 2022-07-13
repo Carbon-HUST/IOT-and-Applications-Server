@@ -3,38 +3,38 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
 const UserSchema = mongoose.Schema({
-    name: {
-        type: String,
-        required: [true, 'Please provide name'],
-        trim: true,
-        minlength: 3,
-        maxlength: 50
-    },
-    email: {
-        type: String,
-        required: [true, 'Please provide email'],
-        trim: true,
-        match: [/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/],
-        unique: true,
-    },
-    password: {
-        type: String,
-        required: [true, 'Please provide password with at least 6 characters'],
-        minlength: 6
-    },
-    identification: {
-        type: String,
-        required: [true, 'Please provide your ID'],
-        match: [/^[0-9]+$/],
-        validate: {
-            validator: function (id) {
-                return id.length === 12;
-            },
-            message: id => `${id} is not a valid ID`
-        }
+  name: {
+    type: String,
+    required: [true, 'Please provide name'],
+    trim: true,
+    minlength: 3,
+    maxlength: 50
+  },
+  email: {
+    type: String,
+    required: [true, 'Please provide email'],
+    trim: true,
+    match: [/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/],
+    unique: true,
+  },
+  password: {
+    type: String,
+    required: [true, 'Please provide password with at least 6 characters'],
+    minlength: 6
+  },
+  identification: {
+    type: String,
+    required: [true, 'Please provide your ID'],
+    match: [/^[0-9]+$/],
+    validate: {
+      validator: function (id) {
+        return id.length === 12;
+      },
+      message: id => `${id} is not a valid ID`
     }
+  }
 }, {
-    timestampt: true
+  timestamps: true
 });
 
 UserSchema.pre('save', async function () {

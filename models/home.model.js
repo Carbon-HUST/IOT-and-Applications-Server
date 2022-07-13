@@ -28,7 +28,7 @@ const HomeSchema = mongoose.Schema({
         required: false
     }
 }, {
-    timestampts: true
+    timestamps: true
 });
 
 module.exports = mongoose.model('Home', HomeSchema);
