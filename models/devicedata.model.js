@@ -9,19 +9,24 @@ const DeviceDataSchema = mongoose.Schema({
         enum: ['temperature', 'humidity', 'gas']
     },
     value: {
-        type: Number
+        type: mongoose.Schema.Types.Mixed,
+        required: true
     },
     status: {
         type: String,
         enum: ['ON', 'OFF'],
         default: 'ON'
     },
-    additionalInfo: Object,
+    additionalInfo: mongoose.Schema.Types.Mixed,
     timestamp: {
         type: Date,
         default: Date.now
     },
     deviceId: {
+        type: mongoose.Types.ObjectId,
+        required: true
+    },
+    attributeId: {
         type: mongoose.Types.ObjectId,
         required: true
     }

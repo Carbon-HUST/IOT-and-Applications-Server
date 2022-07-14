@@ -83,41 +83,10 @@ const addDeviceData = async (req, res) => {
 
 }
 
-const getDeviceData = async (req, res) => {
-    const deviceId = req.body.deviceId;
-    let startTime = req.body.startTime;
-    if (!startTime) {
-        throw new BadRequestError("Start time is missing");
-    }
-    startTime = new Date(startTime);
-    if (!startTime) {
-        throw new BadRequestError("Start time is invalid");
-    }
-    let endTime = req.body.endTime;
-    if (!endTime) {
-        throw new BadRequestError("End time is missing");
-    }
-    endTime = new Date(endTime);
-    if (!endTime) {
-        throw new BadRequestError("End time is invalid");
-    }
-
-    const data = await DeviceData.find({
-        deviceId,
-        timestampt: {
-            $gte: startTime,
-            $lte: endTime
-        }
-    });
-
-    return res.status(StatusCodes.OK).json({ data });
-}
-
 module.exports = {
     getById,
     getByRoom,
     addToRoom,
     update,
-    destroy,
-    getDeviceData
+    destroy
 }
