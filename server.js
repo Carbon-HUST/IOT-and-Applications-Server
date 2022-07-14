@@ -8,6 +8,7 @@ const userRouter = require('./routes/user.route');
 const roomRouter = require('./routes/room.route');
 const homeRouter = require('./routes/home.route');
 const deviceRouter = require('./routes/device.route');
+const deviceTypeRouter = require('./routes/devicetype.route');
 
 const authenticationMiddleware = require('./middlewares/authentication');
 const notFoundMiddleware = require('./middlewares/notfound.middleware');
@@ -21,6 +22,7 @@ app.use('/api/auth', userRouter);
 app.use('/api/room', authenticationMiddleware, roomRouter);
 app.use('/api/home', authenticationMiddleware, homeRouter);
 app.use('/api/device', authenticationMiddleware, deviceRouter);
+app.use('/api/devicetype', deviceTypeRouter);
 
 app.use(notFoundMiddleware);
 app.use(errorHandlerMiddleware);
