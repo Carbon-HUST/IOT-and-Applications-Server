@@ -1,16 +1,9 @@
 const mongoose = require('mongoose');
 
 const DeviceSchema = mongoose.Schema({
-    name: {
-        type: String,
-        required: [true, 'Please provide a name for new device'],
-        minlength: 2,
-        maxlength: 50
-    },
-    type: {
-        type: String,
-        enum: ['SENSOR', 'DEVICE'],
-        default: 'DEVICE'
+    deviceTypeId: {
+        type: mongoose.Types.ObjectId,
+        required: true
     },
     roomId: {
         type: mongoose.Types.ObjectId,

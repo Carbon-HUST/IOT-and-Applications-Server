@@ -13,9 +13,11 @@ const DeviceDataSchema = mongoose.Schema({
     },
     status: {
         type: String,
-        enum: ['ON', 'OFF']
+        enum: ['ON', 'OFF'],
+        default: 'ON'
     },
-    timestampt: {
+    additionalInfo: Object,
+    timestamp: {
         type: Date,
         default: Date.now
     },

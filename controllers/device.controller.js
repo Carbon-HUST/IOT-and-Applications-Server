@@ -1,6 +1,7 @@
 const Device = require('../models/device.model');
 const Room = require('../models/room.model');
 const DeviceData = require('../models/devicedata.model');
+const DeviceType = require('../models/devicetype.model');
 const { NotFoundError, BadRequestError } = require('../errors');
 const { StatusCodes } = require('http-status-codes');
 
@@ -17,6 +18,8 @@ const getById = async (req, res) => {
     if (!device) {
         throw new NotFoundError("Device not found");
     }
+
+    device.deviceType = await DeviceType.findById(device["deviceTypeId"]);
 
     return res.status(StatusCodes.OK).json({ device });
 }
@@ -37,9 +40,14 @@ const getByRoom = async (req, res) => {
 
 const addToRoom = async (req, res) => {
     const roomId = req.body.roomId;
+    const deviceTypeId = req.body.deviceTypeId;
     const room = await Room.exists({ _id: roomId });
     if (!room) {
         throw new NotFoundError("Room not found");
+    }
+
+    if (!(await DeviceType.exists({ _id: deviceTypeId }))) {
+        throw new NotFoundError("Device type not found");
     }
 
     const device = await Device.create(req.body);

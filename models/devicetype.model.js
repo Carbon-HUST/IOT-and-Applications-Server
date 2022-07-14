@@ -7,15 +7,7 @@ const DeviceTypeSchema = mongoose.Schema({
         minlength: 2,
         maxlength: 50
     },
-    price: {
-        type: Number,
-        required: [true, 'Please provide a price for device']
-    },
-    stock: {
-        type: Number,
-        required: [true, 'Please provide a price for device']
-    },
-    thumbnail: {
+    image: {
         type: String
     },
     description: {
