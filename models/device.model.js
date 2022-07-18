@@ -1,9 +1,10 @@
 const mongoose = require('mongoose');
 
 const DeviceSchema = mongoose.Schema({
-    deviceTypeId: {
+    deviceType: {
         type: mongoose.Types.ObjectId,
-        required: true
+        required: true,
+        ref: "DeviceType"
     },
     roomId: {
         type: mongoose.Types.ObjectId,

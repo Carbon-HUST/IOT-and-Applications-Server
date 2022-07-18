@@ -19,7 +19,7 @@ const getById = async (req, res) => {
         throw new NotFoundError("Device not found");
     }
 
-    device.deviceType = await DeviceType.findById(device["deviceTypeId"]);
+    device.deviceType = await DeviceType.findById(device["deviceTypeId"]).populate("deviceType");
 
     return res.status(StatusCodes.OK).json({ device });
 }
@@ -33,7 +33,7 @@ const getByRoom = async (req, res) => {
 
     const devices = await Device.find({
         roomId: roomId
-    });
+    }).populate("deviceType");
 
     return res.status(StatusCodes.OK).json({ devices });
 }
