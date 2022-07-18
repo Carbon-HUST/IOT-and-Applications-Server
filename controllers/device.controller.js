@@ -25,7 +25,7 @@ const getById = async (req, res) => {
 }
 
 const getByRoom = async (req, res) => {
-    const roomId = req.body.roomId;
+    const roomId = req.params.roomId;
     const room = await Room.exists({ _id: roomId });
     if (!room) {
         throw new NotFoundError("Room not found");

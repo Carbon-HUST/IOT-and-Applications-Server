@@ -10,11 +10,11 @@ const { StatusCodes } = require('http-status-codes');
 // delete a room
 
 const getByUser = async (req, res) => {
-    const { id } = req.user;
-    const homeId = req.body.homeId;
+    const { userId } = req.user;
+    let homeId = req.body.homeId;
 
     if (!homeId && homeId !== 0) {
-        const home = await Home.findOne({ userId: id });
+        const home = await Home.findOne({ userId: userId });
         if (!home) {
             throw new NotFoundError("Home not found");
         }
