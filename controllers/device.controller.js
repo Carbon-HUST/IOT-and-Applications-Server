@@ -14,12 +14,10 @@ const { StatusCodes } = require('http-status-codes');
 
 const getById = async (req, res) => {
     const deviceId = req.params.deviceId;
-    const device = await Device.findById(deviceId);
+    const device = await Device.findById(deviceId).populate("deviceType");
     if (!device) {
         throw new NotFoundError("Device not found");
     }
-
-    device.deviceType = await DeviceType.findById(device["deviceTypeId"]).populate("deviceType");
 
     return res.status(StatusCodes.OK).json({ device });
 }
@@ -50,7 +48,10 @@ const addToRoom = async (req, res) => {
         throw new NotFoundError("Device type not found");
     }
 
-    const device = await Device.create(req.body);
+    const device = await Device.create({
+        roomId,
+        deviceType: deviceTypeId
+    });
     return res.status(StatusCodes.CREATED).json({ device });
 }
 
@@ -76,11 +77,7 @@ const destroy = async (req, res) => {
         throw new NotFoundError("Device not found");
     }
 
-    return res.status(StatusCodes.OK).send();
-}
-
-const addDeviceData = async (req, res) => {
-
+    return res.status(StatusCodes.NO_CONTENT).send();
 }
 
 module.exports = {
