@@ -1,5 +1,6 @@
 require('dotenv').config();
 require('express-async-errors');
+require('./mqtt/subscriber');
 
 const express = require('express');
 const connectDb = require('./config/db.config');
@@ -41,4 +42,3 @@ const start = async () => {
 }
 
 start();
-
