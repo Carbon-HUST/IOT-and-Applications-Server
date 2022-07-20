@@ -28,7 +28,8 @@ const DeviceDataSchema = mongoose.Schema({
     },
     attributeId: {
         type: mongoose.Types.ObjectId,
-        required: true
+        required: true,
+        ref: "DataAttribute"
     }
 });
 

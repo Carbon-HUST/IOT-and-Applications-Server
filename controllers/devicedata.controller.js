@@ -31,18 +31,20 @@ const getDeviceData = async (req, res) => {
             $gte: startTime,
             $lte: endTime
         }
-    });
+    }).populate("attributeId");
 
+    const returnedResult = [];
     if (result.length > 0) {
         for (data of result) {
-            const attributes = await DataAttribute.findById(data["attributeId"]);
-            data["name"] = attributes["name"];
-            data["unitOfMeasurement"] = attributes["unitOfMeasurement"];
-            data["type"] = attributes["type"];
+            const date = data["timestamp"];
+            const dateString = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()} ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`;
+            data = data.toObject();
+            data.time = dateString;
+            returnedResult.push(data);
         }
     }
 
-    return res.status(StatusCodes.OK).json({ result });
+    return res.status(StatusCodes.OK).json({ result: returnedResult });
 }
 
 const addData = async (req, res) => {
