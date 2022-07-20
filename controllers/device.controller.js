@@ -33,7 +33,17 @@ const getByRoom = async (req, res) => {
         roomId: roomId
     }).populate("deviceType");
 
-    return res.status(StatusCodes.OK).json({ devices });
+    const sensors = [];
+    const leds = [];
+    for (let device of devices) {
+        if (device["deviceType"]["name"] === "LED") {
+            leds.push(device);
+        } else {
+            sensors.push(device);
+        }
+    }
+
+    return res.status(StatusCodes.OK).json({ sensors, leds });
 }
 
 const addToRoom = async (req, res) => {
