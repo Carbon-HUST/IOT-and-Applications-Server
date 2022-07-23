@@ -1,13 +1,6 @@
 const mongoose = require('mongoose');
 
 const DeviceDataSchema = mongoose.Schema({
-    name: {
-        type: String,
-        trim: true,
-        minlength: 2,
-        maxlength: 50,
-        enum: ['temperature', 'humidity', 'gas']
-    },
     value: {
         type: mongoose.Schema.Types.Mixed,
         required: true

@@ -1,9 +1,12 @@
 const mongoose = require('mongoose');
 
 const DataAttributeSchema = mongoose.Schema({
-    name: { // temperature, humidity, ...
+    name: {
         type: String,
-        required: [true, "Please provide name of data"],
+        trim: true,
+        minlength: 2,
+        maxlength: 50,
+        enum: ['temperature', 'humidity', 'gas', 'status']
     },
     type: { // data type of data's value
         type: String,

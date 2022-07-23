@@ -2,9 +2,12 @@ const mqtt = require("mqtt");
 const Dump = require('./dumpModel');
 const DataAttribute = require('../models/dataattribute.model');
 const DeviceData = require('../models/devicedata.model');
+const Device = require('../models/device.model');
 
 const topic = process.env.TOPIC;
 const broker = process.env.BROKER;
+const username = process.env.USERNAME;
+const password = process.env.PASSWORD;
 
 const addOneData = async (data) => {
     const now = (new Date()).toISOString();
@@ -40,10 +43,17 @@ const addOneData = async (data) => {
     data.attributeId = dataAttribute["_id"];
 
     const result = await DeviceData.create(data);
+    if (name == "status" && (data.value === "ON" || data.value === "OFF")) {
+        await Device.findByIdAndUpdate(data.deviceId, {
+            status: data.value
+        });
+        console.log(`${data.deviceId}'s status updated`);
+    }
     return result;
 }
 
 const addDatas = async (topic, payload) => {
+    console.log("data");
     const payloadJson = JSON.parse(payload.toString());
     if (Array.isArray(payloadJson)) {
         for (let data of payloadJson) {
@@ -56,7 +66,16 @@ const addDatas = async (topic, payload) => {
     }
 }
 
-const client = mqtt.connect(broker);
+const client = mqtt.connect(broker, {
+    username: "server",
+    password: "server",
+    protocol: "mqtt/tcp"
+});
+
+// client.on('connect', (connack) => {
+//     console.log("Connected to broker");
+
+// });
 
 client.subscribe(topic);
 
