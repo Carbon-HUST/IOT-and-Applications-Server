@@ -26,6 +26,15 @@ const HomeSchema = mongoose.Schema({
     userId: {
         type: mongoose.Types.ObjectId,
         required: false
+    },
+    brokerPassword: {
+        type: String,
+        required: true
+    },
+    brokerId: {
+        type: mongoose.Types.ObjectId,
+        required: true,
+        ref: "Broker"
     }
 }, {
     timestamps: true

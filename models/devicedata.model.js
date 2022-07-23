@@ -12,11 +12,11 @@ const DeviceDataSchema = mongoose.Schema({
         type: mongoose.Schema.Types.Mixed,
         required: true
     },
-    status: {
-        type: String,
-        enum: ['ON', 'OFF'],
-        default: 'ON'
-    },
+    // status: {
+    //     type: String,
+    //     enum: ['ON', 'OFF'],
+    //     default: 'ON'
+    // },
     additionalInfo: mongoose.Schema.Types.Mixed,
     timestamp: {
         type: Date,

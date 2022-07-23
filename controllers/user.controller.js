@@ -26,11 +26,11 @@ const login = async (req, res) => {
 	}
 	// compare password
 	const token = user.createJWT()
-	const home = await Home.findOne({ userId: user._id });
+	const home = await Home.findOne({ userId: user._id }).populate("brokerId");
 	if (!home) {
 		return res.status(StatusCodes.OK).json({ user: { name: user.name }, token, homeId: null });
 	}
-	return res.status(StatusCodes.OK).json({ user: { name: user.name }, token, homeId: home._id });
+	return res.status(StatusCodes.OK).json({ user: { name: user.name }, token, homeId: home._id, brokerPassword: home.brokerPassword, brokerHost: home.brokerId.host });
 }
 
 const changePassword = async (req, res) => {

@@ -11,6 +11,7 @@ const homeRouter = require('./routes/home.route');
 const deviceRouter = require('./routes/device.route');
 const deviceTypeRouter = require('./routes/devicetype.route');
 const deviceDataRouter = require('./routes/devicedata.route');
+const brokerRouter = require('./routes/broker.route');
 
 const authenticationMiddleware = require('./middlewares/authentication');
 const notFoundMiddleware = require('./middlewares/notfound.middleware');
@@ -25,6 +26,7 @@ app.use('/api/room', authenticationMiddleware, roomRouter);
 app.use('/api/home', authenticationMiddleware, homeRouter);
 app.use('/api/device', authenticationMiddleware, deviceRouter);
 app.use('/api/devicetype', deviceTypeRouter);
+app.use('/api/broker', brokerRouter);
 app.use('/api/data', authenticationMiddleware, deviceDataRouter);
 
 app.use(notFoundMiddleware);
