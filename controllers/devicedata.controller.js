@@ -27,7 +27,7 @@ const getDeviceData = async (req, res) => {
 
     const result = await DeviceData.find({
         deviceId,
-        timestampt: {
+        timestamp: {
             $gte: startTime,
             $lte: endTime
         }
